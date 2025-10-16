@@ -50,26 +50,39 @@ const Chatbot = ({ onClose, isOpen }) => {
       const botReply = await sendChatMessage(input)
       let currentText = ''
       setMsgList(prev => prev.filter(msg => !msg.isTyping))
-      const typeLetters = (i = 0) => {
-        if (i < botReply.length) {
-          currentText += botReply[i]
-          setMsgList(prev => [
-            ...prev.filter(msg => !msg.isTyping),
-            { message: currentText, user: false, isTyping: true },
-          ])
-          setTimeout(() => typeLetters(i + 1), 20)
-        } else {
-          setMsgList(prev => [
-            ...prev.filter(msg => !msg.isTyping),
-            { message: botReply, user: false },
-          ])
-          localStorage.setItem(
-            "Hack_Chat_msg",
-            JSON.stringify([...msgList, newMsg, { message: botReply, user: false }])
-          )
+      // On mobile, avoid the per-letter typing animation to reduce timers and re-renders
+      const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
+      if (isMobile) {
+        setMsgList(prev => [
+          ...prev.filter(msg => !msg.isTyping),
+          { message: botReply, user: false },
+        ])
+        localStorage.setItem(
+          "Hack_Chat_msg",
+          JSON.stringify([...msgList, newMsg, { message: botReply, user: false }])
+        )
+      } else {
+        const typeLetters = (i = 0) => {
+          if (i < botReply.length) {
+            currentText += botReply[i]
+            setMsgList(prev => [
+              ...prev.filter(msg => !msg.isTyping),
+              { message: currentText, user: false, isTyping: true },
+            ])
+            setTimeout(() => typeLetters(i + 1), 20)
+          } else {
+            setMsgList(prev => [
+              ...prev.filter(msg => !msg.isTyping),
+              { message: botReply, user: false },
+            ])
+            localStorage.setItem(
+              "Hack_Chat_msg",
+              JSON.stringify([...msgList, newMsg, { message: botReply, user: false }])
+            )
+          }
         }
+        typeLetters()
       }
-      typeLetters()
     } catch (error) {
       setMsgList(prev => [
         ...prev.filter(msg => !msg.isTyping),
@@ -80,7 +93,7 @@ const Chatbot = ({ onClose, isOpen }) => {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 bg-white/20 backdrop-blur-2xl 
+      className={`chatbot-panel fixed bottom-6 right-6 bg-white/20 backdrop-blur-2xl 
       rounded-2xl shadow-2xl border border-gray-200 z-50 flex flex-col overflow-hidden 
       transition-all duration-700 ${isOpen ? "w-[90vw] md:w-[60vw] h-[85vh] md:h-[80vh] opacity-100" : "w-0 h-0 opacity-0"
         }`}

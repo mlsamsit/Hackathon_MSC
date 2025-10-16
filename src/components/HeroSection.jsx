@@ -12,17 +12,17 @@ function HeroSection() {
   // Countdown timer logic
   useEffect(() => {
     const targetDate = new Date('2025-11-14T00:00:00').getTime()
-    
+
     const updateCountdown = () => {
       const now = new Date().getTime()
       const difference = targetDate - now
-      
+
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24))
         const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
         const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
         const seconds = Math.floor((difference % (1000 * 60)) / 1000)
-        
+
         setTimeLeft({ days, hours, minutes, seconds })
       } else {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -30,8 +30,11 @@ function HeroSection() {
     }
 
     updateCountdown()
-    const interval = setInterval(updateCountdown, 1000)
-    
+    // Reduce update frequency on mobile to save CPU and avoid frequent re-renders
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
+    const tickMs = isMobile ? 5000 : 1000
+    const interval = setInterval(updateCountdown, tickMs)
+
     return () => clearInterval(interval)
   }, [])
 
@@ -66,10 +69,10 @@ function HeroSection() {
           <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-cyan-600/30 scale-110"></div>
           
           <div className='text-4xl md:text-6xl lg:text-7xl font-black mb-4 relative'>
-            <div className='mb-2 text-white hero-title-glow leading-none tracking-tight'>
+            <div className='mb-2 text-white hero-title-glow leading-none tracking-tight mobile-heading-glow'>
               QUANTUM FORGE
             </div>
-            <div className='text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-600 animate-gradient-flow leading-none tracking-tight'>
+            <div className='text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-600 animate-gradient-flow leading-none tracking-tight mobile-visible mobile-heading-glow'>
               HACKATHON 2025
             </div>
           </div>

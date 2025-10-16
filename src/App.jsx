@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {BotMessageSquare} from "lucide-react"
 import './App.css'
 
@@ -9,13 +9,23 @@ import Sponsors from './components/Sponsors'
 import Team from './components/Team'
 import Faq from './components/Faq'
 import Footer from './components/Footer'
-import Chatbot from './components/ChatBot'
+import { lazy, Suspense } from 'react'
+const Chatbot = lazy(() => import('./components/ChatBot'))
+import Loader from './components/Loader'
 
 function App() {
   const [isOpen, setIsOpen] = useState(false)
+  const [showLoader, setShowLoader] = useState(true)
+
+  useEffect(() => {
+    // safety: hide loader after 2.5s if something prevents load event
+    const t = setTimeout(() => setShowLoader(false), 2500)
+    return () => clearTimeout(t)
+  }, [])
 
   return (
     <div id='hero' className="App relative">
+      {showLoader && <Loader onFinish={() => setShowLoader(false)} />}
       <Navbar />
       <HeroSection />
       <About />
@@ -54,9 +64,14 @@ function App() {
       </button>
 
 
-      <div className={`${isOpen ? "w-[70vw] h-[70vh] " : "h-0 w-0"} transition-all duration-700`}>
-        <Chatbot isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      </div>
+      {/* Only mount Chatbot when opened to avoid work on mobile while closed */}
+      {isOpen && (
+        <div className={`fixed bottom-6 right-6 z-50 w-[90vw] md:w-[70vw] h-[70vh] md:h-[70vh] transition-all duration-500`}>
+          <Suspense fallback={<div className="w-full h-full bg-white/80 rounded-2xl flex items-center justify-center text-black">Loading chat...</div>}>
+            <Chatbot isOpen={isOpen} onClose={() => setIsOpen(false)} />
+          </Suspense>
+        </div>
+      )}
     </div>
   )
 }

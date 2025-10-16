@@ -93,12 +93,12 @@ function Faq() {
             <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-purple-600/30 scale-110"></div>
             
             <h2 className="text-3xl md:text-6xl lg:text-7xl font-black mb-4 relative leading-tight">
-              <span className="text-white drop-shadow-2xl tracking-tight" style={{textShadow: '0 0 20px rgba(59, 130, 246, 0.5)'}}>
+              <span className="text-white drop-shadow-2xl tracking-tight mobile-heading-glow" style={{textShadow: '0 0 20px rgba(59, 130, 246, 0.5)'}}>
                 FREQUENTLY
               </span>
               <br />
               <span 
-                className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 tracking-tight"
+                className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 tracking-tight mobile-heading-glow"
                 style={{
                   backgroundSize: '200% 200%',
                   animation: 'gradient-flow 4s ease infinite'

@@ -60,9 +60,9 @@ function About() {
             <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-blue-500/30 via-cyan-500/30 to-blue-600/30 scale-110"></div>
             
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-black mb-4 relative leading-tight">
-              <span className="text-white drop-shadow-2xl tracking-tight">ABOUT</span>
+              <span className="text-white drop-shadow-2xl tracking-tight mobile-heading-glow">ABOUT</span>
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600 animate-gradient-flow tracking-tight">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600 animate-gradient-flow tracking-tight mobile-visible mobile-heading-glow">
                 THE EVENT
               </span>
             </h2>
