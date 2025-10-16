@@ -4,7 +4,7 @@ const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
 
 export async function sendChatMessage(message) {
-  let apiKey = "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";
+  let apiKey = import.meta.env.VITE_GROQ_API_KEY;
   const userMsgPrevious = localStorage.getItem("Hack_Chat_msg");
   const eventPrompt = `
     You are a helpful AI assistant for an upcoming hackathon event hosted by the Microsoft Student Chapter (MSC) at Maharaja Surajmal Institute of Technology (MSIT).
